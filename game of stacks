@@ -1,0 +1,50 @@
+#!/bin/python3
+
+import os
+
+def twoStacks(maxSum, a, b):
+    sum_val = 0
+    count = 0
+    i = 0
+    j = 0
+
+    while i < len(a) and sum_val + a[i] <= maxSum:
+        sum_val += a[i]
+        i += 1
+        count += 1
+
+    max_count = count
+
+    while j < len(b) and i >= 0:
+        sum_val += b[j]
+        j += 1
+
+        while sum_val > maxSum and i > 0:
+            i -= 1
+            sum_val -= a[i]
+
+        if sum_val <= maxSum:
+            max_count = max(max_count, i + j)
+
+    return max_count
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    g = int(input().strip())
+
+    for g_itr in range(g):
+        first_multiple_input = input().rstrip().split()
+
+        n = int(first_multiple_input[0])
+        m = int(first_multiple_input[1])
+        maxSum = int(first_multiple_input[2])
+
+        a = list(map(int, input().rstrip().split()))
+        b = list(map(int, input().rstrip().split()))
+
+        result = twoStacks(maxSum, a, b)
+
+        fptr.write(str(result) + '\n')
+
+    fptr.close()
